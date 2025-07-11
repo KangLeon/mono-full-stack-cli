@@ -4,7 +4,7 @@ import chalk from 'chalk'
 import { ProjectConfig } from '../types/index.js'
 import { getPackageManager } from './package-manager.js'
 
-const execAsync = promisify(exec)
+const execAsync = promisify(exec.bind(null))
 
 /**
  * 安装项目依赖
