@@ -118,9 +118,26 @@ async function getProjectConfig(
     let template: ProjectTemplate
     let packageManager = detectPackageManager()
 
-    if (options.yes) {
-        // 使用默认配置
+    if (options.yes || options.template) {
+        // 使用指定的模板或默认配置
         template = options.template || 'fullstack'
+        // 如果指定了模板但没有-y，仍需要选择包管理器
+        if (!options.yes && options.template) {
+            const answers = await inquirer.prompt([
+                {
+                    type: 'list',
+                    name: 'packageManager',
+                    message: '选择包管理器:',
+                    choices: [
+                        { name: 'pnpm (推荐)', value: 'pnpm' },
+                        { name: 'npm', value: 'npm' },
+                        { name: 'yarn', value: 'yarn' },
+                    ],
+                    default: packageManager,
+                },
+            ])
+            packageManager = answers.packageManager
+        }
     } else {
         // 交互式配置
         const answers = await inquirer.prompt([
