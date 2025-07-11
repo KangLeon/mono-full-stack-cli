@@ -40,6 +40,38 @@ async function main() {
             .description('一个快速创建全栈monorepo项目的脚手架CLI工具')
             .version(version, '-v, --version', '显示版本信息')
 
+        // 支持直接传递项目名称：create-mono-app my-app 或 mono-cli my-app
+        program
+            .argument('[project-name]', '项目名称')
+            .option(
+                '-t, --template <template>',
+                '指定项目模板 (frontend-only, fullstack, mobile-app, complete)'
+            )
+            .option('-y, --yes', '使用默认配置，跳过交互式提示')
+            .option('--skip-install', '跳过依赖安装')
+            .action(async (projectName, options) => {
+                if (projectName) {
+                    await createProject(projectName, options)
+                } else {
+                    // 如果没有提供项目名称，显示帮助
+                    program.outputHelp()
+                    console.log()
+                    console.log(chalk.cyan('💡 快速开始:'))
+                    console.log(chalk.gray('  $ create-mono-app my-app'))
+                    console.log(chalk.gray('  $ mono-cli my-app'))
+                    console.log(chalk.gray('  $ cd my-app'))
+                    console.log(chalk.gray('  $ pnpm dev'))
+                    console.log()
+                    console.log(chalk.cyan('🔗 更多信息:'))
+                    console.log(
+                        chalk.gray(
+                            '  文档: https://github.com/KangLeon/mono-full-stack-cli'
+                        )
+                    )
+                    console.log()
+                }
+            })
+
         program
             .command('create [project-name]')
             .description('创建一个新的全栈monorepo项目')
@@ -65,24 +97,6 @@ async function main() {
 
         // 解析命令行参数
         await program.parseAsync(process.argv)
-
-        // 如果没有提供任何参数，显示帮助信息
-        if (!process.argv.slice(2).length) {
-            program.outputHelp()
-            console.log()
-            console.log(chalk.cyan('💡 快速开始:'))
-            console.log(chalk.gray('  $ mono-cli create my-app'))
-            console.log(chalk.gray('  $ cd my-app'))
-            console.log(chalk.gray('  $ pnpm dev'))
-            console.log()
-            console.log(chalk.cyan('🔗 更多信息:'))
-            console.log(
-                chalk.gray(
-                    '  文档: https://github.com/leona-team/mono-full-stack-cli'
-                )
-            )
-            console.log()
-        }
     } catch (error) {
         console.error(
             chalk.red('❌ 错误:'),
