@@ -1,0 +1,55 @@
+# 源码文件
+src/
+tsconfig.json
+
+# 开发依赖
+node_modules/
+.pnp
+.pnp.js
+
+# 测试文件
+test-project/
+__tests__/
+*.test.ts
+*.spec.ts
+
+# 开发工具配置
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 系统文件
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# 日志文件
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# 临时文件
+tmp/
+temp/
+
+# 环境变量
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 文档（保留主要的README）
+DEMO.md
+TEMPLATE_GUIDE.md
+cli.md
+
+# Git相关
+.git/
+.gitignore 
