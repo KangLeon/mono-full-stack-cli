@@ -101,15 +101,15 @@ async function generateSimpleNextjsProject(projectPath, config, spinner) {
     // 如果不跳过安装，安装额外的依赖
     if (!config.skipInstall) {
         spinner.text = '正在安装额外依赖...';
-        const installCommand = config.packageManager === 'npm'
-            ? 'npm install @radix-ui/react-slot class-variance-authority clsx lucide-react tailwind-merge tailwindcss-animate'
-            : 'pnpm add @radix-ui/react-slot class-variance-authority clsx lucide-react tailwind-merge tailwindcss-animate';
-        try {
-            await execAsync(installCommand, { cwd: projectPath });
-        }
-        catch (error) {
-            spinner.warn(chalk_1.default.yellow('额外依赖安装失败，但项目已创建成功'));
-        }
+        const extraPackages = [
+            '@radix-ui/react-slot',
+            'class-variance-authority',
+            'clsx',
+            'lucide-react',
+            'tailwind-merge',
+            'tailwindcss-animate',
+        ];
+        await (0, installer_js_1.installExtraDependencies)(projectPath, extraPackages, config.packageManager);
     }
     spinner.succeed(chalk_1.default.green('NextJS项目创建完成！'));
     // 显示下一步指令

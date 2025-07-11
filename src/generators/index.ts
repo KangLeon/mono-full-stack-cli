@@ -9,7 +9,10 @@ import { generateLernaConfig } from './lerna.js'
 import { generateNextjsApp } from './nextjs.js'
 import { generateNestjsApp } from './nestjs.js'
 import { generateReactNativeApp } from './react-native.js'
-import { installDependencies } from '../utils/installer.js'
+import {
+    installDependencies,
+    installExtraDependencies,
+} from '../utils/installer.js'
 
 const execAsync = promisify(exec)
 
@@ -117,16 +120,20 @@ async function generateSimpleNextjsProject(
     // 如果不跳过安装，安装额外的依赖
     if (!config.skipInstall) {
         spinner.text = '正在安装额外依赖...'
-        const installCommand =
-            config.packageManager === 'npm'
-                ? 'npm install @radix-ui/react-slot class-variance-authority clsx lucide-react tailwind-merge tailwindcss-animate'
-                : 'pnpm add @radix-ui/react-slot class-variance-authority clsx lucide-react tailwind-merge tailwindcss-animate'
+        const extraPackages = [
+            '@radix-ui/react-slot',
+            'class-variance-authority',
+            'clsx',
+            'lucide-react',
+            'tailwind-merge',
+            'tailwindcss-animate',
+        ]
 
-        try {
-            await execAsync(installCommand, { cwd: projectPath })
-        } catch (error) {
-            spinner.warn(chalk.yellow('额外依赖安装失败，但项目已创建成功'))
-        }
+        await installExtraDependencies(
+            projectPath,
+            extraPackages,
+            config.packageManager
+        )
     }
 
     spinner.succeed(chalk.green('NextJS项目创建完成！'))

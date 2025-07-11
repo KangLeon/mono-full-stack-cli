@@ -1,6 +1,6 @@
 {
   "name": "mono-full-stack-cli",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "一个快速创建全栈monorepo项目的脚手架CLI工具，支持NextJS、NestJS和React Native",
   "main": "dist/index.js",
   "bin": {
